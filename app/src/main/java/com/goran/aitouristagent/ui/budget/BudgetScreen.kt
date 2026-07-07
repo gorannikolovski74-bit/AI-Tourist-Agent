@@ -12,7 +12,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.AlertDialog
@@ -44,6 +46,8 @@ import com.goran.aitouristagent.domain.Expense
 fun BudgetScreen(
     tripId: String,
     onBack: () -> Unit,
+    onOpenItinerary: () -> Unit,
+    onOpenChat: () -> Unit,
     viewModel: BudgetViewModel = hiltViewModel(),
 ) {
     val trip by viewModel.trip.collectAsState()
@@ -61,6 +65,14 @@ fun BudgetScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onOpenItinerary) {
+                        Icon(Icons.Filled.Event, contentDescription = "Итинерар")
+                    }
+                    IconButton(onClick = onOpenChat) {
+                        Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "AI Chat")
                     }
                 },
             )

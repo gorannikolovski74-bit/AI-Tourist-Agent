@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Delete
@@ -47,6 +48,7 @@ fun ItineraryScreen(
     tripId: String,
     onBack: () -> Unit,
     onOpenBudget: () -> Unit,
+    onOpenChat: () -> Unit,
     viewModel: ItineraryViewModel = hiltViewModel(),
 ) {
     val trip by viewModel.trip.collectAsState()
@@ -65,6 +67,9 @@ fun ItineraryScreen(
                 actions = {
                     IconButton(onClick = onOpenBudget) {
                         Icon(Icons.Filled.AccountBalanceWallet, contentDescription = "Буџет")
+                    }
+                    IconButton(onClick = onOpenChat) {
+                        Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = "AI Chat")
                     }
                 },
             )

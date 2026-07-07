@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.goran.aitouristagent.data.local.ActivityDao
 import com.goran.aitouristagent.data.local.AppDatabase
 import com.goran.aitouristagent.data.local.BudgetItemDao
+import com.goran.aitouristagent.data.local.ChatMessageDao
 import com.goran.aitouristagent.data.local.DayDao
 import com.goran.aitouristagent.data.local.ExpenseDao
 import com.goran.aitouristagent.data.local.TripDao
@@ -41,4 +42,7 @@ object DatabaseModule {
 
     @Provides
     fun provideExpenseDao(database: AppDatabase): ExpenseDao = database.expenseDao()
+
+    @Provides
+    fun provideChatMessageDao(database: AppDatabase): ChatMessageDao = database.chatMessageDao()
 }

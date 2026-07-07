@@ -24,6 +24,8 @@ class TripRepository @Inject constructor(
     fun observeTrips(): Flow<List<Trip>> =
         tripDao.observeTrips().map { entities -> entities.map { it.toDomain() } }
 
+    suspend fun getTrip(tripId: String): Trip? = tripDao.getTripById(tripId)?.toDomain()
+
     suspend fun createTrip(
         name: String,
         destination: String,
