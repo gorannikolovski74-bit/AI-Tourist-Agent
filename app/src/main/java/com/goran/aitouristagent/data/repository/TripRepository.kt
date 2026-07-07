@@ -65,11 +65,15 @@ class TripRepository @Inject constructor(
             .onFailure { Log.w(TAG, "deleteTrip: server sync failed, kept locally", it) }
     }
 
-    /** Pulls trips from the server and merges them in, last-write-wins by [Trip.updatedAt]. */
-    suspend fun refreshFromServer() {
+    /**
+     * Pulls trips from the server and merges them in, last-write-wins by [Trip.updatedAt].
+     * Returns false if the server was unreachable (offline), so the UI can let the user know
+     * changes are only saved locally for now.
+     */
+    suspend fun refreshFromServer(): Boolean {
         val remoteTrips = runCatching { apiService.getTrips() }
             .onFailure { Log.w(TAG, "refreshFromServer: fetch failed", it) }
-            .getOrNull() ?: return
+            .getOrNull() ?: return false
 
         for (dto in remoteTrips) {
             val local = tripDao.getTripById(dto.id)
@@ -77,6 +81,7 @@ class TripRepository @Inject constructor(
                 tripDao.upsert(dto.toEntity())
             }
         }
+        return true
     }
 }
 

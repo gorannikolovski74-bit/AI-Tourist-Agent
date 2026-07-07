@@ -200,7 +200,7 @@ Link(id, tripId, name, url, desc, updatedAt, deleted)
 - [x] Chat sync меѓу уреди (`/api/v1/trips/:id/chat`, текст-само историја)
 
 ### Фаза 5 — Polish (1-2 сесии)
-- [ ] Офлајн режим тестиран, Maps intents (ATM/ресторани), икона, splash
+- [x] Офлајн режим тестиран (офлајн банер на Trips екранот), Maps intents (ATM/аптека/ресторани), икона (location pin), splash (androidx core-splashscreen)
 - [ ] Signed release APK / Play Store internal testing
 
 ---

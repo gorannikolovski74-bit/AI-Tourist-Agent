@@ -3,10 +3,14 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- Location pin -->
     <path
         android:fillColor="#4ECA7F"
-        android:pathData="M54,24 L70,54 L54,84 L38,54 Z" />
+        android:pathData="M54,20 C41,20 30,31 30,44 C30,62 54,86 54,86 C54,86 78,62 78,44 C78,31 67,20 54,20 Z" />
+    <path
+        android:fillColor="#0A0F0D"
+        android:pathData="M54,32 C46.8,32 41,37.8 41,45 C41,52.2 46.8,58 54,58 C61.2,58 67,52.2 67,45 C67,37.8 61.2,32 54,32 Z" />
     <path
         android:fillColor="#D4A843"
-        android:pathData="M54,40 L62,54 L54,68 L46,54 Z" />
+        android:pathData="M54,40 C50.1,40 47,43.1 47,47 C47,50.9 50.1,54 54,54 C57.9,54 61,50.9 61,47 C61,43.1 57.9,40 54,40 Z" />
 </vector>

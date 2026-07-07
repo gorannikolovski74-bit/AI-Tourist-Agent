@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +46,7 @@ fun TripsScreen(
     viewModel: TripsViewModel = hiltViewModel(),
 ) {
     val trips by viewModel.trips.collectAsState()
+    val isOffline by viewModel.isOffline.collectAsState()
     var showCreateDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -64,22 +66,31 @@ fun TripsScreen(
             }
         },
     ) { padding ->
-        if (trips.isEmpty()) {
-            EmptyTripsState(padding)
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-            ) {
-                items(trips, key = { it.id }) { trip ->
-                    TripCard(
-                        trip = trip,
-                        onClick = { onOpenTrip(trip.id) },
-                        onDelete = { viewModel.deleteTrip(trip.id) },
-                    )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
+            if (isOffline) {
+                OfflineBanner()
+            }
+            if (trips.isEmpty()) {
+                EmptyTripsState(modifier = Modifier.weight(1f))
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                ) {
+                    items(trips, key = { it.id }) { trip ->
+                        TripCard(
+                            trip = trip,
+                            onClick = { onOpenTrip(trip.id) },
+                            onDelete = { viewModel.deleteTrip(trip.id) },
+                        )
+                    }
                 }
             }
         }
@@ -97,11 +108,32 @@ fun TripsScreen(
 }
 
 @Composable
-private fun EmptyTripsState(padding: PaddingValues) {
-    Box(
+private fun OfflineBanner() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.errorContainer)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+    ) {
+        Icon(
+            Icons.Filled.CloudOff,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.error,
+            modifier = Modifier.padding(end = 8.dp),
+        )
+        Text(
+            text = "Работиш офлајн — промените ќе се синхронизираат кога ќе има интернет.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error,
+        )
+    }
+}
+
+@Composable
+private fun EmptyTripsState(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
         Text(

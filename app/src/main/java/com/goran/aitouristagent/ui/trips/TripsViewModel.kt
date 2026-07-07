@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.goran.aitouristagent.data.repository.TripRepository
 import com.goran.aitouristagent.domain.Trip
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -18,8 +19,11 @@ class TripsViewModel @Inject constructor(
     val trips: StateFlow<List<Trip>> = tripRepository.observeTrips()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
+    private val _isOffline = MutableStateFlow(false)
+    val isOffline: StateFlow<Boolean> = _isOffline
+
     init {
-        viewModelScope.launch { tripRepository.refreshFromServer() }
+        viewModelScope.launch { _isOffline.value = !tripRepository.refreshFromServer() }
     }
 
     fun createTrip(
