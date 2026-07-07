@@ -175,11 +175,11 @@ Link(id, tripId, name, url, desc, updatedAt, deleted)
 
 ## 4. Фазен план за развој
 
-### Фаза 0 — Setup (1 сесија)
-- [ ] Нов repo `ai-tourist-agent` (или `android/` дир во постоечкиот)
-- [ ] Android Studio проект: Compose + Hilt + Room + Retrofit skeleton
-- [ ] Тема со боите од §1.4
-- [ ] CI: GitHub Actions за `./gradlew assembleDebug` (APK artifact за тестирање!)
+### Фаза 0 — Setup (1 сесија) ✅ завршена
+- [x] Нов repo `ai-tourist-agent` (или `android/` дир во постоечкиот)
+- [x] Android Studio проект: Compose + Hilt + Room + Retrofit skeleton
+- [x] Тема со боите од §1.4
+- [x] CI: GitHub Actions за `./gradlew assembleDebug` (APK artifact за тестирање!)
 
 ### Фаза 1 — Backend v1 (1 сесија)
 - [ ] `server.js`: SQLite + `/api/v1/trips` CRUD + Bearer token auth
