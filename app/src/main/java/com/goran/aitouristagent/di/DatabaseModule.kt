@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.goran.aitouristagent.data.local.ActivityDao
 import com.goran.aitouristagent.data.local.AppDatabase
+import com.goran.aitouristagent.data.local.BudgetItemDao
 import com.goran.aitouristagent.data.local.DayDao
+import com.goran.aitouristagent.data.local.ExpenseDao
 import com.goran.aitouristagent.data.local.TripDao
 import dagger.Module
 import dagger.Provides
@@ -33,4 +35,10 @@ object DatabaseModule {
 
     @Provides
     fun provideActivityDao(database: AppDatabase): ActivityDao = database.activityDao()
+
+    @Provides
+    fun provideBudgetItemDao(database: AppDatabase): BudgetItemDao = database.budgetItemDao()
+
+    @Provides
+    fun provideExpenseDao(database: AppDatabase): ExpenseDao = database.expenseDao()
 }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +46,7 @@ import com.goran.aitouristagent.domain.Day
 fun ItineraryScreen(
     tripId: String,
     onBack: () -> Unit,
+    onOpenBudget: () -> Unit,
     viewModel: ItineraryViewModel = hiltViewModel(),
 ) {
     val trip by viewModel.trip.collectAsState()
@@ -58,6 +60,11 @@ fun ItineraryScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onOpenBudget) {
+                        Icon(Icons.Filled.AccountBalanceWallet, contentDescription = "Буџет")
                     }
                 },
             )
