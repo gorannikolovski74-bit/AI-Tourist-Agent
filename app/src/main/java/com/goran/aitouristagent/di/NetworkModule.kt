@@ -2,6 +2,7 @@ package com.goran.aitouristagent.di
 
 import com.goran.aitouristagent.BuildConfig
 import com.goran.aitouristagent.data.remote.ApiService
+import com.goran.aitouristagent.data.remote.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +15,8 @@ import retrofit2.Retrofit
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
 
-// Server URL from the roadmap's droplet (§1.1). Made user-configurable in ui/settings once
-// the settings screen lands; for now it is the single default backend.
+// Server URL from the roadmap's droplet (§1.1). The API token is user-configurable
+// (ui/settings, via TokenStore); the server URL itself is still fixed for MVP.
 private const val BASE_URL = "http://157.245.207.38:3000/"
 
 @Module
@@ -29,7 +30,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
@@ -38,6 +39,7 @@ object NetworkModule {
             }
         }
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .addInterceptor(logging)
             .build()
     }
