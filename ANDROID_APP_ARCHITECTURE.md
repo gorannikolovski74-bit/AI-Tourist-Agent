@@ -199,9 +199,9 @@ Link(id, tripId, name, url, desc, updatedAt, deleted)
 - [x] Слика upload (камера + галерија, компресија на макс. 1568px / JPEG q80)
 - [x] Chat sync меѓу уреди (`/api/v1/trips/:id/chat`, текст-само историја)
 
-### Фаза 5 — Polish (1-2 сесии)
+### Фаза 5 — Polish (1-2 сесии) ✅ завршена
 - [x] Офлајн режим тестиран (офлајн банер на Trips екранот), Maps intents (ATM/аптека/ресторани), икона (location pin), splash (androidx core-splashscreen)
-- [ ] Signed release APK / Play Store internal testing
+- [x] Signed release APK — семејна употреба (без Play Store), keystore генериран и испратен директно на Горан (НЕ во repo-то); `keystore.properties` (gitignored) го конфигурира `app/build.gradle.kts` да потпишува release build-ови кога постои
 
 ---
 
