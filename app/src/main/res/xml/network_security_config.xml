@@ -4,6 +4,6 @@
          Android blocks cleartext traffic by default since API 28; scope the exception to
          just this IP instead of allowing cleartext app-wide. -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="false">157.245.207.38</domain>
+        <domain includeSubdomains="false">146.190.202.161</domain>
     </domain-config>
 </network-security-config>

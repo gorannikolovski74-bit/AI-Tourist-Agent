@@ -15,9 +15,10 @@ import retrofit2.Retrofit
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
 
-// Server URL from the roadmap's droplet (§1.1). The API token is user-configurable
-// (ui/settings, via TokenStore); the server URL itself is still fixed for MVP.
-private const val BASE_URL = "http://157.245.207.38:3000/"
+// Server URL from the roadmap's droplet (§1.1) — a DigitalOcean Reserved IP, stable
+// across droplet recreations. The API token is user-configurable (ui/settings, via
+// TokenStore); the server URL itself is still fixed for MVP.
+private const val BASE_URL = "http://146.190.202.161:3000/"
 
 @Module
 @InstallIn(SingletonComponent::class)
