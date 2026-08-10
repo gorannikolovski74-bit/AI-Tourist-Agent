@@ -4,16 +4,41 @@
 > за да се изгради Android апликација „AI Tourist Agent" врз основа на постоечкиот
 > Italia-2026 web dashboard. Новата сесија треба да го прочита ова ПРВО.
 
+## ⏸️ ПАУЗИРАНО (22.07.2026) — production droplet е уништен
+
+Droplet-от `CloudPC2` (го хостираше Italia-2026 dashboard + MKB2B + оваа AI Tourist Agent
+backend работа, сите на ист сервер) е **избришан** заради трошоци. Состојба:
+
+- ✅ **Snapshot "CloudPC2" зачуван** (~$0.39/месечно) — содржи целосна слика на серверот
+  во моментот на бришење (сите 3 проекти, `.env` фајлови, JSON/SQLite податоци)
+- ❌ **Reserved IP `146.190.202.161` ослободена** (не се наплатува повеќе, но веќе не е наша)
+- ❌ Droplet-от, Italia-2026 dashboard-от, MKB2B, и AI Tourist Agent backend-от (PR #1 во
+  Italia-2026, сè уште неmerge-нат) се сите **офлајн**
+
+**За да продолжиш:**
+1. DigitalOcean → Images → Snapshots → создади нов Droplet од snapshot-от "CloudPC2"
+2. Networking → Reserved IPs → резервирај нова IP и прикачи ја на новиот droplet
+   (droplet-овата сопствена ephemeral IP НЕ може да се "конвертира" во Reserved IP —
+   секогаш е нова адреса, види ги commit-ите од 22.07.2026 за целосниот процес)
+3. Ажурирај ја новата IP на 3 места: GitHub webhook payload URL (Italia-2026 repo settings),
+   `NetworkModule.kt` + `network_security_config.xml` во оваа Android апликација, и провери
+   дали MKB2B-то (`gorannikolovski74-bit/macedonia-b2b`) некаде ја користи (не најдовме
+   hardcoded референци при последната проверка, но provери го production `.env`-то на серверот)
+4. Постави `API_TOKEN` во `.env` на новиот droplet (види §3.3) пред да го merge-неш PR #1
+
 ---
 
 ## 1. Контекст — што постои сега
 
 ### 1.1 Постоечки систем (web dashboard)
 - **Repo:** `gorannikolovski74-bit/Italia-2026` (GitHub)
-- **Production сервер:** DigitalOcean droplet `157.245.207.38:3000`
+- **Production сервер:** DigitalOcean droplet `CloudPC2` — **тековно избришан, види ⏸️ горе**.
+  Последна позната адреса: Reserved IP `146.190.202.161:3000` (ослободена при бришењето);
+  пред неа `157.245.207.38` (ephemeral IP на оригиналниот droplet).
 - **Stack:** Node.js + Express (`server.js`), еден HTML фајл (`public/index.html`) со inline CSS/JS
 - **Process manager:** PM2, процес `italia-2026`
-- **Auto-deploy:** GitHub webhook → POST `http://157.245.207.38:3000/webhook`
+- **Auto-deploy:** GitHub webhook → POST `http://<ip>:3000/webhook` (IP се менува по секое
+  рестаурирање од snapshot — ажурирај го во GitHub repo Settings → Webhooks)
   (HMAC-SHA256, secret env `WEBHOOK_SECRET`, default `italia2026deploy`) → `git pull origin main` + `pm2 restart italia-2026`
 - **Работен тек:** Claude Code (web) → push на `main` → авто-деплој. Без SSH, без VSCode.
 
@@ -175,33 +200,33 @@ Link(id, tripId, name, url, desc, updatedAt, deleted)
 
 ## 4. Фазен план за развој
 
-### Фаза 0 — Setup (1 сесија)
-- [ ] Нов repo `ai-tourist-agent` (или `android/` дир во постоечкиот)
-- [ ] Android Studio проект: Compose + Hilt + Room + Retrofit skeleton
-- [ ] Тема со боите од §1.4
-- [ ] CI: GitHub Actions за `./gradlew assembleDebug` (APK artifact за тестирање!)
+### Фаза 0 — Setup (1 сесија) ✅ завршена
+- [x] Нов repo `ai-tourist-agent` (или `android/` дир во постоечкиот)
+- [x] Android Studio проект: Compose + Hilt + Room + Retrofit skeleton
+- [x] Тема со боите од §1.4
+- [x] CI: GitHub Actions за `./gradlew assembleDebug` (APK artifact за тестирање!)
 
-### Фаза 1 — Backend v1 (1 сесија)
-- [ ] `server.js`: SQLite + `/api/v1/trips` CRUD + Bearer token auth
-- [ ] Migration скрипта: сегашните JSON фајлови → SQLite (Italia 2026 станува првото патување)
-- [ ] Дашбордот продолжува да работи
+### Фаза 1 — Backend v1 (1 сесија) ✅ завршена (во Italia-2026 repo, branch `feature/api-v1-trips-sqlite`, чека merge)
+- [x] `server.js`: SQLite + `/api/v1/trips` CRUD + Bearer token auth
+- [x] Migration скрипта: сегашните JSON фајлови → SQLite (Italia 2026 станува првото патување)
+- [x] Дашбордот продолжува да работи (старите rути и JSON фајлови се непроменети)
 
-### Фаза 2 — App core (2-3 сесии)
-- [ ] Trips листа + креирање патување
-- [ ] Итинерар екран (денови/активности, read + edit)
-- [ ] Room + sync со серверот
+### Фаза 2 — App core (2-3 сесии) ✅ завршена
+- [x] Trips листа + креирање патување
+- [x] Итинерар екран (денови/активности, read + edit)
+- [x] Room + sync со серверот (trips; денови/активности сè уште само локално — backend нема `/days` endpoints)
 
-### Фаза 3 — Буџет и трошоци (1 сесија)
-- [ ] Буџет план екран + внес реални трошоци + споредба (како дашбордот)
+### Фаза 3 — Буџет и трошоци (1 сесија) ✅ завршена
+- [x] Буџет план екран + внес реални трошоци + споредба (како дашбордот) — Room-only, backend сè уште нема `/budget`/`/expenses` за trip
 
-### Фаза 4 — AI Chat (1-2 сесии)
-- [ ] Chat екран со динамички system prompt
-- [ ] Слика upload (камера + галерија, компресија)
-- [ ] Chat sync меѓу уреди
+### Фаза 4 — AI Chat (1-2 сесии) ✅ завршена
+- [x] Chat екран со динамички system prompt (дестинација, датуми, итинерар, буџет)
+- [x] Слика upload (камера + галерија, компресија на макс. 1568px / JPEG q80)
+- [x] Chat sync меѓу уреди (`/api/v1/trips/:id/chat`, текст-само историја)
 
-### Фаза 5 — Polish (1-2 сесии)
-- [ ] Офлајн режим тестиран, Maps intents (ATM/ресторани), икона, splash
-- [ ] Signed release APK / Play Store internal testing
+### Фаза 5 — Polish (1-2 сесии) ✅ завршена
+- [x] Офлајн режим тестиран (офлајн банер на Trips екранот), Maps intents (ATM/аптека/ресторани), икона (location pin), splash (androidx core-splashscreen)
+- [x] Signed release APK — семејна употреба (без Play Store), keystore генериран и испратен директно на Горан (НЕ во repo-то); `keystore.properties` (gitignored) го конфигурира `app/build.gradle.kts` да потпишува release build-ови кога постои
 
 ---
 
